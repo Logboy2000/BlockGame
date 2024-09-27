@@ -1,0 +1,78 @@
+[gd_scene load_steps=16 format=3 uid="uid://b4hraqvbuvkbu"]
+
+[ext_resource type="PackedScene" uid="uid://be8y5lkryuiqt" path="res://Objects/player.tscn" id="2_bt3d8"]
+[ext_resource type="VoxelBlockyModelEmpty" uid="uid://cgf7ivsm1xg7l" path="res://Objects/Blocks/air.tres" id="2_j2a8h"]
+[ext_resource type="PackedScene" uid="uid://cobdetf54v0ff" path="res://GUI/main_hud.tscn" id="3_1kysp"]
+[ext_resource type="VoxelBlockyModelCube" uid="uid://bjyhicm8hk2uw" path="res://Objects/Blocks/grass.tres" id="3_yfq8e"]
+[ext_resource type="Texture2D" uid="uid://b0pyilh6ybj1d" path="res://Textures/tileSetMinecraft16.png" id="4_v00f5"]
+
+[sub_resource type="Curve" id="Curve_3lmxb"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.297376, 0.494857), 0.0, 0.0, 0, 0, Vector2(0.478134, 0.338857), 0.0, 0.0, 0, 0, Vector2(0.638484, 0.353714), 0.0, 0.0, 0, 0, Vector2(0.77551, 0.197714), -13.286, -13.286, 0, 0, Vector2(0.845481, 0.546857), 0.0, 0.0, 0, 0, Vector2(0.947522, 0.702857), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 8
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_qxnhs"]
+noise_type = 4
+frequency = 0.1138
+
+[sub_resource type="VoxelGeneratorNoise2D" id="VoxelGeneratorNoise2D_hsqe2"]
+channel = 0
+noise = SubResource("FastNoiseLite_qxnhs")
+curve = SubResource("Curve_3lmxb")
+
+[sub_resource type="VoxelBlockyLibrary" id="VoxelBlockyLibrary_3q0kd"]
+models = Array[VoxelBlockyModel]([ExtResource("2_j2a8h"), ExtResource("3_yfq8e")])
+
+[sub_resource type="VoxelMesherBlocky" id="VoxelMesherBlocky_alp60"]
+library = SubResource("VoxelBlockyLibrary_3q0kd")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ximl5"]
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("4_v00f5")
+albedo_texture_force_srgb = true
+texture_filter = 0
+grow_amount = 0.05
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_783y3"]
+sky_top_color = Color(1, 0.0431373, 1, 1)
+sky_horizon_color = Color(0.870588, 0.164706, 0.32549, 1)
+ground_bottom_color = Color(0, 0, 0, 1)
+ground_horizon_color = Color(0.746342, 0.000138135, 0.647726, 1)
+sun_angle_max = 5.4
+sun_curve = 2.4
+
+[sub_resource type="Sky" id="Sky_g4cg1"]
+sky_material = SubResource("ProceduralSkyMaterial_783y3")
+
+[sub_resource type="Environment" id="Environment_vlpum"]
+background_mode = 2
+sky = SubResource("Sky_g4cg1")
+reflected_light_source = 2
+fog_mode = 1
+fog_density = 1.0
+fog_sky_affect = 0.531
+fog_depth_curve = 4.0
+fog_depth_begin = 0.0
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_cbxm5"]
+auto_exposure_speed = 0.01
+dof_blur_far_distance = 82.18
+dof_blur_far_transition = 683.98
+dof_blur_near_distance = 0.25
+
+[node name="World" type="Node3D"]
+
+[node name="MainHUD" parent="." instance=ExtResource("3_1kysp")]
+
+[node name="VoxelTerrain" type="VoxelTerrain" parent="."]
+generator = SubResource("VoxelGeneratorNoise2D_hsqe2")
+mesher = SubResource("VoxelMesherBlocky_alp60")
+material_override = SubResource("StandardMaterial3D_ximl5")
+
+[node name="Player" parent="." instance=ExtResource("2_bt3d8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 61, 0)
+SPRINT_MULTIPLIER = 1.5
+KEY_BIND_SPRINT = "sprint"
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_vlpum")
+camera_attributes = SubResource("CameraAttributesPractical_cbxm5")

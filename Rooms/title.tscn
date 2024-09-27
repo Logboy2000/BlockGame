@@ -1,0 +1,106 @@
+[gd_scene load_steps=11 format=3 uid="uid://qmt3wy2x0cdj"]
+
+[ext_resource type="Theme" uid="uid://c7fypguw8m1hg" path="res://GUI/theme.tres" id="1_06ovm"]
+[ext_resource type="Script" path="res://Rooms/title.gd" id="1_vbgdl"]
+[ext_resource type="Texture2D" uid="uid://bnfdhae8b8ldv" path="res://Textures/minceraft.png" id="2_p4p6i"]
+[ext_resource type="Texture2D" uid="uid://cm3p103im5r2g" path="res://Textures/title/panorama_0.png" id="4_luw1l"]
+[ext_resource type="Texture2D" uid="uid://buw86h3x24fx4" path="res://Textures/title/panorama_1.png" id="5_c3tyy"]
+[ext_resource type="Texture2D" uid="uid://ciobrrdkbyiix" path="res://Textures/title/panorama_2.png" id="6_u38hi"]
+[ext_resource type="Texture2D" uid="uid://ckhhxq277fm7a" path="res://Textures/title/panorama_3.png" id="7_lhqkx"]
+[ext_resource type="Texture2D" uid="uid://d2sxjedinos7c" path="res://Textures/title/panorama_4.png" id="8_tyae2"]
+[ext_resource type="Texture2D" uid="uid://brejtq0arjo6a" path="res://Textures/title/panorama_5.png" id="9_t3ynn"]
+
+[sub_resource type="GDScript" id="GDScript_uotnl"]
+resource_name = "pano_cam"
+script/source = "
+extends Camera3D
+
+
+func _physics_process(_delta: float) -> void:
+	rotate_y(-0.0005)
+"
+
+[node name="Title" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_06ovm")
+script = ExtResource("1_vbgdl")
+
+[node name="Label" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -512.0
+offset_top = 63.955
+offset_right = 512.0
+offset_bottom = 319.955
+grow_horizontal = 2
+scale = Vector2(0.69, 0.69)
+pivot_offset = Vector2(512, 0)
+texture = ExtResource("2_p4p6i")
+
+[node name="vob" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Play" type="Button" parent="vob"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Singleplayer"
+
+[node name="Quit" type="Button" parent="vob"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Quit Game"
+
+[node name="Panorama" type="Node3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="Panorama"]
+transform = Transform3D(-0.768321, 0.0724109, 0.635548, 0, 0.993572, -0.113203, -0.639659, -0.086976, -0.763379, 0, 0, 0)
+size = 0.25
+script = SubResource("GDScript_uotnl")
+
+[node name="1" type="Sprite3D" parent="Panorama"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -512)
+pixel_size = 1.0
+texture = ExtResource("4_luw1l")
+
+[node name="2" type="Sprite3D" parent="Panorama"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 512, 0, 0)
+pixel_size = 1.0
+texture = ExtResource("5_c3tyy")
+
+[node name="3" type="Sprite3D" parent="Panorama"]
+transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 0, 0, 512)
+pixel_size = 1.0
+texture = ExtResource("6_u38hi")
+
+[node name="4" type="Sprite3D" parent="Panorama"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -512, 0, 0)
+pixel_size = 1.0
+texture = ExtResource("7_lhqkx")
+
+[node name="Top" type="Sprite3D" parent="Panorama"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 512, 0)
+pixel_size = 1.0
+texture = ExtResource("8_tyae2")
+
+[node name="Bottom" type="Sprite3D" parent="Panorama"]
+transform = Transform3D(-1, -8.74228e-08, 3.82137e-15, 0, -4.37114e-08, -1, 8.74228e-08, -1, 4.37114e-08, 0, -512, 0)
+visible = false
+pixel_size = 1.0
+texture = ExtResource("9_t3ynn")
+
+[connection signal="pressed" from="vob/Play" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="vob/Quit" to="." method="_on_quit_pressed"]

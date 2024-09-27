@@ -1,0 +1,44 @@
+[gd_scene load_steps=4 format=3 uid="uid://be8y5lkryuiqt"]
+
+[ext_resource type="Script" path="res://addons/Basic FPS Player/Src/basic_player_startup.gd" id="1_puxy1"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ho7bh"]
+size = Vector3(1, 2, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_liutp"]
+size = Vector3(1, 2, 1)
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_puxy1")
+gravity = 17.0
+SPEED = 3.0
+JUMP_VELOCITY = 6.0
+SPRINT_MULTIPLIER = 1.75
+KEY_BIND_UP = "up"
+KEY_BIND_LEFT = "left"
+KEY_BIND_RIGHT = "right"
+KEY_BIND_DOWN = "down"
+KEY_BIND_JUMP = "jump"
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
+target_position = Vector3(0, 0, -7)
+hit_from_inside = true
+
+[node name="Head" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Head"]
+fov = 90.0
+
+[node name="VoxelViewer" type="VoxelViewer" parent="Head/Camera3D"]
+view_distance = 16
+
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="Head"]
+remote_path = NodePath("../../RayCast3D")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_ho7bh")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_liutp")

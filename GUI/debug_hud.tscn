@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://ccxxf2rgopugv"]
+
+[ext_resource type="Theme" uid="uid://c7fypguw8m1hg" path="res://GUI/theme.tres" id="1_gpwlo"]
+[ext_resource type="Script" path="res://GUI/debug_hud.gd" id="1_r44ah"]
+
+[node name="DebugHUD" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_gpwlo")
+script = ExtResource("1_r44ah")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="FPS" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "FPS:"
+
+[node name="Raycast" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Raycast:"
